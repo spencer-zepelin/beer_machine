@@ -95,7 +95,7 @@ import string
 
 beer_fridge = []
 
-for number in range(1,11):
+for number in range(18601,100001):
     try:
         untappd_beer_dict = {}
         r = requests.get('https://untappd.com/b/---/%s' % number)
@@ -133,13 +133,12 @@ for number in range(1,11):
 
         if number % 5 == 0:
             print('%s beers scraped!!' % number)
-        if number % 10 == 0:
+        if number % 100 == 0:
             hundred_beers = pd.DataFrame(beer_fridge)
-            hundred_beers.to_csv('data/untappd_data_pt%s.csv' % str(number/100))
+            hundred_beers.to_csv('data/untappd_data_pt%s.csv' % str(int(number/100)))
             print('First %s rows saved to csv!!' % number)
             beer_fridge = []
     except:
         pass
-
 
 
