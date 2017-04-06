@@ -7,7 +7,18 @@ import string
 
 
 
-#### Test Scraping up here
+
+def bleach(string):
+    temp = ""
+    string = str(string)
+    for i in string:
+        if i in ["1","2","3","4","5","6","7","8","9","0", "."]:
+            temp += i
+    if len(temp) > 0:
+        return float(temp)
+
+
+# ### Test Scraping up here
 
 
 # untappd_beer_dict = {}
@@ -27,17 +38,21 @@ import string
 
 # potato = meat_and_potatoes.find('div', {'class' : 'name'})
 
-# # print(potato.prettify())
+# print(potato.prettify())
+
+
+# print(int(bleach(meat_and_potatoes.find('a', {'class' : 'label'})['href'])))
 
 # untappd_beer_dict['name'] = potato.h1.string
-
+# untappd_beer_dict['beer_id'] = int(bleach(meat_and_potatoes.find('a', {'class' : 'label'})['href']))
 # untappd_beer_dict['brewery'] = potato.find('p', {'class' : 'brewery'}).a.string
-
+# untappd_beer_dict['brewery_id'] = int(bleach(potato.find('p', {'class' : 'brewery'}).a['href']))
 # untappd_beer_dict['style'] = potato.find('p', {'class' : 'style'}).string
 
 # details = meat_and_potatoes.find('div', {'class' : 'details'})
 
 # stats = meat_and_potatoes.find('div', {'class' : 'stats'}).find_all('span', {'class' : 'count'})
+
 
 
 # checkins = []
@@ -64,23 +79,14 @@ import string
 
 
 
-# def bleach(string):
-#     temp = ""
-#     string = str(string)
-#     for i in string:
-#         if i in ["1","2","3","4","5","6","7","8","9","0", "."]:
-#             temp += i
-#     if len(temp) > 0:
-#         return float(temp)
-
 
 # untappd_beer_dict['abv'] = bleach(details.find('p', {'class' : 'abv'}).string)
 # untappd_beer_dict['ibu'] = bleach(details.find('p', {'class' : 'ibu'}).string)
 # untappd_beer_dict['rating'] = bleach(details.find('p', {'class' : 'rating'}).find('span', {'class' : 'num'}).string)
-# untappd_beer_dict['raters'] = bleach(details.find('p', {'class' : 'raters'}).string)
+# untappd_beer_dict['raters'] = int(bleach(details.find('p', {'class' : 'raters'}).string))
 # untappd_beer_dict['date_added'] = details.find('p', {'class' : 'date'}).string
 
-# print(untappd_beer_dict)
+# # print(untappd_beer_dict)
 
 
 
@@ -95,7 +101,7 @@ import string
 
 beer_fridge = []
 
-for number in range(18601,100001):
+for number in range(21801,100001):
     try:
         untappd_beer_dict = {}
         r = requests.get('https://untappd.com/b/---/%s' % number)
@@ -120,7 +126,9 @@ for number in range(18601,100001):
         untappd_beer_dict['description'] = description.replace('\n', ' ')
 
         untappd_beer_dict['name'] = potato.h1.string
+        untappd_beer_dict['beer_id'] = meat_and_potatoes.find('a', {'class' : 'label'})['href'].split('/')[-1]
         untappd_beer_dict['brewery'] = potato.find('p', {'class' : 'brewery'}).a.string
+        untappd_beer_dict['brewery_id'] = int(bleach(potato.find('p', {'class' : 'brewery'}).a['href']))
         untappd_beer_dict['style'] = potato.find('p', {'class' : 'style'}).string
         untappd_beer_dict['abv'] = details.find('p', {'class' : 'abv'}).string
         untappd_beer_dict['ibu'] = details.find('p', {'class' : 'ibu'}).string
@@ -133,9 +141,9 @@ for number in range(18601,100001):
 
         if number % 5 == 0:
             print('%s beers scraped!!' % number)
-        if number % 100 == 0:
+        if number % 200 == 0:
             hundred_beers = pd.DataFrame(beer_fridge)
-            hundred_beers.to_csv('data/untappd_data_pt%s.csv' % str(int(number/100)))
+            hundred_beers.to_csv('data/untappd_newdata_pt%s.csv' % str(int(number/200)))
             print('First %s rows saved to csv!!' % number)
             beer_fridge = []
     except:
