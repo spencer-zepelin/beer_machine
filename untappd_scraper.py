@@ -93,7 +93,7 @@ def bleach(string):
 
 
 
-
+    
 
 
 ##### The actual scraping is down here 
@@ -101,12 +101,12 @@ def bleach(string):
 
 beer_fridge = []
 
-for number in range(21801,100001):
-    try:
-        untappd_beer_dict = {}
-        r = requests.get('https://untappd.com/b/---/%s' % number)
+for number in range(75001,150001):
+    # try:
+    untappd_beer_dict = {}
+    r = requests.get('https://untappd.com/b/---/%s' % number)
+    if r.status_code == 200:
         content = bs(r.content, 'lxml')
-
         meat_and_potatoes = content.find('div', {'class':'content'})
         potato = meat_and_potatoes.find('div', {'class' : 'name'})
         details = meat_and_potatoes.find('div', {'class' : 'details'})
@@ -146,7 +146,10 @@ for number in range(21801,100001):
             hundred_beers.to_csv('data/untappd_newdata_pt%s.csv' % str(int(number/200)))
             print('First %s rows saved to csv!!' % number)
             beer_fridge = []
-    except:
-        pass
+    elif r.status_code != 404:
+        print(r.status_code)  
+    else:
+        pass      
+
 
 

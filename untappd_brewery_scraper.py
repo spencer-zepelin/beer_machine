@@ -77,94 +77,114 @@ import string
 
 ### Import list of brewery ID Numbers here!!!!!
 
-df = pd.read_csv('data/untappd_newdata_pt1.csv').iloc[:,1:].copy()
+df = pd.read_csv('data/master_untappd_data.csv').iloc[:,1:].copy()
+unscraped_breweries = open('data/unscraped_brewery_ids.txt', 'a')
+scraped_breweries = open('data/scraped_brewery_ids.txt', 'a')
 
 list_of_ids = df.brewery_id.values
+set_of_ids = set(list_of_ids)
+already_scraped = []
 
 
-print(list_of_ids[0:5])
+print(len(list_of_ids))
+print(len(set_of_ids))
+
+with open('data/scraped_brewery_ids.txt', 'r') as f:
+    for x in f:
+        print(x.split(','))
+        print(type(x))
+
+# print(already_scraped)
+# for item in file:
+#     filestring = item
+# already_scraped = filestring.split(',')
+
+# ids_to_scrape = [id_num for id_num in set_of_ids if str(id_num) not in already_scraped]
+
 
 
 
 # ## Actual Scraping
 
-unscraped_breweries = open('data/unscraped_brewery_ids.txt', 'w')
+# list_of_breweries = []
 
-list_of_breweries = []
+# for i, brewery_id in enumerate(ids_to_scrape):
+#     try:
+#         brewery_dict = {}
+#         ### ID
+#         brewery_dict['brewery_id'] = brewery_id
+#         r = requests.get('https://untappd.com/w/---/%s' % brewery_id)
+#         content = bs(r.content, 'lxml')
+#         meat_and_potatoes = content.find('div', {'class':'content'})
 
-for i, brewery_id in enumerate(list_of_ids[0:10]):
-    try:
-        brewery_dict = {}
-        r = requests.get('https://untappd.com/w/---/%s' % brewery_id)
-        content = bs(r.content, 'lxml')
-        meat_and_potatoes = content.find('div', {'class':'content'})
+#         name_info = meat_and_potatoes.find('div', {'class' : 'name'})
+#         ##name
+#         brewery_dict['brewery_name'] = name_info.h1.string
+#         ##type
+#         brewery_dict['brewery_type'] = name_info.find('p', {'class' : 'style'}).string
+#         ##location
+#         brewery_dict['brewery_location'] = name_info.find('p', {'class' : 'brewery'}).string
+#         ##description
+#         description = ''
+#         for element in meat_and_potatoes.find('div', {'class' : 'beer-descrption-read-less'}).contents:
+#             if '<' not in str(element): 
+#                 description += element
+#         brewery_dict['brewery_description'] = description
+#         ###subsidiary status
+#         subsidiary_ids = []
+#         subsidiary_names = []
+#         subsidiaries = name_info.find('p', {'class' : 'subsidiary'})
+#         if subsidiaries is not None:
+#             for element in subsidiaries.find_all('a'):
+#                 subsidiary_ids.append(int(element.get('href').split('/')[-1]))
+#                 subsidiary_names.append(element.string)
+#             if len(subsidiary_ids) == 1:
+#                 brewery_dict['subsidiary_id'] = subsidiary_ids[0]
+#                 brewery_dict['subsidiary_name'] = subsidiary_names[0]
+#             else:
+#                 brewery_dict['subsidiary_id'] = subsidiary_ids
+#                 brewery_dict['subsidiary_name'] = subsidiary_names
+#         else:
+#             brewery_dict['subsidiary_id'] = None
+#             brewery_dict['subsidiary_name'] = None
+#         ###checkins
+#         stats = meat_and_potatoes.find('div', {'class' : 'stats'}).find_all('span', {'class' : 'count'})
+#         checkins = []
+#         for element in stats:
+#             checkins.append(element.string)
+#         brewery_dict['total_brewery_checkins'] = checkins[0]
+#         brewery_dict['unique_brewery_checkins'] = checkins[1]
+#         brewery_dict['monthly_brewery_checkins'] = checkins[2]
+#         ### lower bar info
+#         lower_bar = meat_and_potatoes.find('div', {'class' : 'details brewery claimed'})
+#         if lower_bar is not None:
+#             brewery_dict['brewery_rating'] = lower_bar.find('p', {'class' : 'rating'}).find('span', {'class' : 'num'}).string
+#             brewery_dict['brewery_raters'] = lower_bar.find('p', {'class' : 'raters'}).string
+#             brewery_dict['brewery_num_beers'] = lower_bar.find('p', {'class' : 'count'}).a.string
+#             brewery_dict['date_brewery_added'] = lower_bar.find('p', {'class' : 'date'}).string
+#             brewery_dict['brewery_account_status'] = lower_bar.find('p', {'class' : 'claim'}).a.string
+#         else:
+#             lower_bar = meat_and_potatoes.find('div', {'class' : 'details brewery'})
+#             brewery_dict['brewery_rating'] = lower_bar.find('p', {'class' : 'rating'}).find('span', {'class' : 'num'}).string
+#             brewery_dict['brewery_raters'] = lower_bar.find('p', {'class' : 'raters'}).string
+#             brewery_dict['brewery_num_beers'] = lower_bar.find('p', {'class' : 'count'}).a.string
+#             brewery_dict['date_brewery_added'] = lower_bar.find('p', {'class' : 'date'}).string
+#             brewery_dict['brewery_account_status'] = 'presumed_unclaimed'
+#         row = brewery_dict
+#         list_of_breweries.append(row)
+#         if (i+1) % 5 == 0:
+#             print('%s breweries scraped!!' % (i+1))
+#         if (i+1) % 100 == 0:
+#             hundred_breweries = pd.DataFrame(list_of_breweries)
+#             hundred_breweries.to_csv('data/untappd_breweries_pt%s.csv' % str(int((i+1)/100)))
+#             print('First %s rows saved to csv!!' % (i+1))
+#             for brewery in list_of_breweries:
+#                 scraped_breweries.write('%s,' % brewery['brewery_id'])
+#             list_of_breweries = []
 
-        name_info = meat_and_potatoes.find('div', {'class' : 'name'})
-        ##name
-        brewery_dict['brewery_name'] = name_info.h1.string
-        ##type
-        brewery_dict['brewery_type'] = name_info.find('p', {'class' : 'style'}).string
-        ##location
-        brewery_dict['brewery_location'] = name_info.find('p', {'class' : 'brewery'}).string
-        ##description
-        description = ''
-        for element in meat_and_potatoes.find('div', {'class' : 'beer-descrption-read-less'}).contents:
-            if '<' not in str(element): 
-                description += element
-        brewery_dict['brewery_description'] = description
-        ###subsidiary status
-        subsidiary_ids = []
-        subsidiary_names = []
-        subsidiaries = name_info.find('p', {'class' : 'subsidiary'})
-        if subsidiaries is not None:
-            for element in subsidiaries.find_all('a'):
-                subsidiary_ids.append(int(element.get('href').split('/')[-1]))
-                subsidiary_names.append(element.string)
-            if len(subsidiary_ids) == 1:
-                brewery_dict['subsidiary_id'] = subsidiary_ids[0]
-                brewery_dict['subsidiary_name'] = subsidiary_names[0]
-            else:
-                brewery_dict['subsidiary_id'] = subsidiary_ids
-                brewery_dict['subsidiary_name'] = subsidiary_names
-        else:
-            brewery_dict['subsidiary_id'] = None
-            brewery_dict['subsidiary_name'] = None
-        ###checkins
-        stats = meat_and_potatoes.find('div', {'class' : 'stats'}).find_all('span', {'class' : 'count'})
-        checkins = []
-        for element in stats:
-            checkins.append(element.string)
-        brewery_dict['total_brewery_checkins'] = checkins[0]
-        brewery_dict['unique_brewery_checkins'] = checkins[1]
-        brewery_dict['monthly_brewery_checkins'] = checkins[2]
-        ### lower bar info
-        lower_bar = meat_and_potatoes.find('div', {'class' : 'details brewery claimed'})
-        if lower_bar is not None:
-            brewery_dict['brewery_rating'] = lower_bar.find('p', {'class' : 'rating'}).find('span', {'class' : 'num'}).string
-            brewery_dict['brewery_raters'] = lower_bar.find('p', {'class' : 'raters'}).string
-            brewery_dict['brewery_num_beers'] = lower_bar.find('p', {'class' : 'count'}).a.string
-            brewery_dict['date_brewery_added'] = lower_bar.find('p', {'class' : 'date'}).string
-            brewery_dict['brewery_account_status'] = lower_bar.find('p', {'class' : 'claim'}).a.string
-        else:
-            lower_bar = meat_and_potatoes.find('div', {'class' : 'details brewery'})
-            brewery_dict['brewery_rating'] = lower_bar.find('p', {'class' : 'rating'}).find('span', {'class' : 'num'}).string
-            brewery_dict['brewery_raters'] = lower_bar.find('p', {'class' : 'raters'}).string
-            brewery_dict['brewery_num_beers'] = lower_bar.find('p', {'class' : 'count'}).a.string
-            brewery_dict['date_brewery_added'] = lower_bar.find('p', {'class' : 'date'}).string
-            brewery_dict['brewery_account_status'] = 'presumed_unclaimed'
-        row = brewery_dict
-        list_of_breweries.append(row)
-
-        if (i+1) % 5 == 0:
-            print('%s breweries scraped!!' % (i+1))
-        if (i+1) % 10 == 0:
-            hundred_breweries = pd.DataFrame(list_of_breweries)
-            hundred_breweries.to_csv('data/untappd_breweries_pt%s.csv' % str(int((i+1)/10)))
-            print('First %s rows saved to csv!!' % (i+1))
-            list_of_breweries = []
-    except:
-        unscraped_breweries.write('%s,' % brewery_id)
-        pass
+#     except:
+#         unscraped_breweries.write('%s,' % brewery_id)
+#         pass
 
 
 
