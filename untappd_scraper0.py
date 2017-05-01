@@ -118,7 +118,7 @@ def bleach(string):
 beer_fridge = []
 
 
-for number in range(28601, 100001):
+for number in range(92801, 100001):
     untappd_beer_dict = {}
     try:
         try:

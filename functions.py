@@ -21,7 +21,7 @@
 #### Features accounted for:
 ## Numeric: 'rating', 'raters', 'abv', 'ibu', 'total_checkins', 'unique_checkins', 'monthly_checkins','total_brewery_checkins', 'unique_brewery_checkins', 'monthly_brewery_checkins', 'brewery_raters', 'brewery_rating', 'brewery_num_beers',
 
-### Datetime: 'date_added', 'date_brewery_added',
+### Datetime: 'date_added', 'date_brewery_added', ---> time delta????
 
 ### Naturally Boolean: 'oop', 'brewery_account_status',
 
@@ -56,6 +56,10 @@ def bleach_date(string):
             temp += i
     if len(temp) > 0:
         return temp
+
+
+def string_cleaner(string):
+    return string.replace('\n', '').replace('\t', '').strip()
 # Use on numerics: 'rating', 'raters', 'abv', 'ibu', 'total_checkins', 'unique_checkins', 'monthly_checkins', 'total_brewery_checkins', 'unique_brewery_checkins', 'brewery_raters', 'brewery_rating', 'brewery_num_beers',
 
 ## I think I'm gonna impute missing IBU data to 0, but I'm not sure if that's the best solution
