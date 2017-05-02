@@ -1,8 +1,3 @@
-
-
-Any future deployment strategies, additions of data, or modeling techniques you have yet to try
-
-
 ## Project Elements
 ### Data Acquisition
 All the data that I used in this project was scraped off of Untappd[LINK]. Every row in my dataset represents a single beer from Untappd's database and the summary data about that beer based on the aggregation of all user "check-ins" of that beer.
