@@ -20,6 +20,7 @@ The most salient element of this scraping protocol was the presence of the brewe
 
 ### Data Cleaning and Transformation 
 [Partial Data EDA](https://github.com/spencer-zepelin/beer_machine/blob/master/SZ-Capstone-Pt-2-Notebook.ipynb) [Data Cleaning and Joining](https://github.com/spencer-zepelin/beer_machine/blob/master/all_data_clean_n_join.ipynb)
+
 Almost all of the data were in string format after being scraped. All of the numerical features had to be stripped of any extraneous characters and transformed into floats or integers. Datetime information was likewise stripped from strings. Even string data had extraneous formatting that had to be systematically cleaned. From there categorical variables were converted into useable dummy format as necessary. 
 
 The most labor-intensive data transformation involved the beer style column. Both the ABV and IBU columns had substantial missing data, and I figured sufficient style information could serve as an effective stand-in in addition to providing other relevant features for the model. To achieve this, I hard-coded a taxonomy of beers, dividing the nearly 170 styles first into broad categories (ales, lagers, and others) and next into more specific subtypes and stylistic groupings.
