@@ -29,6 +29,7 @@ At the outset, operationalizing the target variable was fairly straightforward. 
 
 ### Modeling
 [Base Models Build](https://github.com/spencer-zepelin/beer_machine/blob/master/Modeling.ipynb)
+
 A classification model was built to first predicted whether a beer belonged in the low, medium, or high groups. Based on the result, that beer was then passed along to a regressor trained on data from that stratum. 
 
 For classification models, random forests, extra trees, and the XGBoost classifier proved most effective. Depth limitations were placed on all of the models to prevent overfitting and led to a reduction in variance and improved scores on cross-validation. XGBoost was also strongly l2 regularized (lambda=50) and lightly l1 regularized (alpha=0.01). I ended up synthesizing these three models with a soft-voting classifier. 
@@ -39,6 +40,7 @@ XGBoost Regressors with depth limitations were used as the three regression mode
 
 ### Results
 [Final Model and Scores](https://github.com/spencer-zepelin/beer_machine/blob/master/final_model.ipynb)
+
 The Mean Absolute Error on the holdout test data was 0.18. The median of the distribution of absolute errors was 0.133 indicating that at least half of our predictions are less than 0.15 away from the actual value, around 3% off over the range of the target variable. In this sense, the model is a success. Less than 0.5% of predictions were off by 1.0 or more.
 
 ### Next Steps
