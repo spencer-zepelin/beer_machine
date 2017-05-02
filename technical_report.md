@@ -1,6 +1,6 @@
 ## Project Elements
 ### Data Acquisition
-All the data that I used in this project was scraped off of Untappd[LINK]. Every row in my dataset represents a single beer from Untappd's database and the summary data about that beer based on the aggregation of all user "check-ins" of that beer.
+All the data that I used in this project was scraped off of Untappd. Every row in my dataset represents a single beer from Untappd's database and the summary data about that beer based on the aggregation of all user "check-ins" of that beer.
 
 I used a combination of Requests and Beautiful to scrape the data. The scrapers iterated over the following URL:
 ```https://untappd.com/w/---/BEER_ID_NUMBER```
