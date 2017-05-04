@@ -2,7 +2,9 @@
 
 This repo contains my work on my final project for General Assembly Chicago's Data Science Immersive course.
 
-Follow [this link](https://docs.google.com/presentation/d/1cBRxQ0HISlL-w3Uk-jA8-sT_vh4mauoVNyxiYdz6BEI/edit#slide=id.g20587fea3d_0_90) to the slide deck for the lightning talk on this project. 
+Follow [this link](https://docs.google.com/presentation/d/1cBRxQ0HISlL-w3Uk-jA8-sT_vh4mauoVNyxiYdz6BEI/edit#slide=id.g20587fea3d_0_90) to the slide deck for the lightning talk on this project.
+
+Follow [this link](https://docs.google.com/presentation/d/1RSJRFbe7qADO_zXJZrREWm1V3cR3lXyKqQ7AeIIEp6w/edit#slide=id.g217cb0fabd_0_801) to the slide deck for the capstone presentation.
 
 ## Project Elements
 - Data Acquisition
